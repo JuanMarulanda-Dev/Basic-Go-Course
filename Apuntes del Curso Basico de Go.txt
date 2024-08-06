@@ -1,0 +1,298 @@
+Go
+
+Historia de Go
+    - Nacio por la necesidad de Google de tener un lenguage tan potente como C y las ventajas de los lenguajes modernos
+    - Se emepezo a desarrollar en 2007 y salio a producción en el año 2012
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Funciones basicas
+
+    Buenas Practicas
+        * GO te obliga a utilziar buenas practicas
+
+    Impresión en consola
+        * fmt (El paquete de impresión de GO) 
+
+    Declaracion de variables (Existen tres formas)
+        * variable := valor (Crea y asigna el valor y el tipo a la variables)
+        * var variable tipo (Variables)
+        * var variable tipo = valor
+        * const variable tipo
+
+    Zero Values (Valores por defecto) (En GO al declarar las variables por defecto no es nulo, si no que tiene un valor asignado por defecto)
+        * int -> 0
+        * double64 -> 0
+        * string -> '' (Vacio)
+        * bool -> false
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Valores Primitivos (Tipos de datos) = No es necesario definir el tipo de dato pero si lo haces vas a ganar mucho performance a nivel de tu codigo
+        Numeros enteros
+            * int = Depende del OS (32 o 64 bits) -> si es de 32 escoge el de 32 si es de 64 escoge el de 64.
+            * int8 = 8bits = -128 a 127
+            * int16 = 16bits = -2^15 a 2^15-1
+            * int32 = 32bits = -2^31 a 2^31-1
+            * int64 = 64bits = -2^63 a 2^63-1
+
+        Optimizar memoria cuando sabemos que el dato simpre va ser positivo
+            * uint = Depende del OS (32 o 64 bits)
+            * uint8 = 8bits = 0 a 127
+            * uint16 = 16bits = 0 a 2^15-1
+            * uint32 = 32bits = 0 a 2^31-1
+            * uint64 = 64bits = 0 a 2^63-1
+
+        numeros decimales
+            * float32 = 32 bits = +/- 1.18e^-38 +/- -3.4e^38
+            * float64 = 64 bits = +/- 2.23e^-308 +/- -1.8e^308
+
+        textos y booleanos
+            * string = ""
+            * bool = true or false
+
+        numeros complejos
+            * Complex64 = Real e Imaginario float32
+            * Complex128 = Real e Imaginario float64
+            * Ejemplo : c:=10 + 8i
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Paquete "fmt" (Tres funciones principales) pero existen muchos máss.... 
+        Para conocer más ingresa a https://pkg.go.dev/fmt 
+
+        * Println -> imprimir con salto de linea
+            Ejemplo: fmt.Println("Hello World")
+
+        * Printf -> Imprimir un valor pero te recibe los parametros de vas a imprimir en la cadena de texto
+            Ejemplo: fmt.Printf("%s tiene más de %d cursos \n", nombre, cursos)
+                - Al escribir "%s" estas diciendo que ahí va a ir un string
+                - Al escribir "%d" esta diciendo que ahí va a ir un valor entero
+                - Si no sabes que valor se va a imprimir se debe usar "%v" (La buena practica seria especificar el tipo de dato si lo sabes)
+
+        * SprintF -> Crea el string como la funcion anterior pero no al imprime directamente, si no que el resultado puede ser asignado a una variable.
+
+    Con fmt tambien podemos conocer el tipo de dato al que pertenece una variable
+        * para saber el tipo de datos utilizamos el "%T"
+        Ejemplo = fmt.Printf("helloMessage: $T", helloMessage)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Uso de funciones y funciones anonimas  
+        * para definir funciones en Go de usa la palabra reservada "func" ejemplo: func main() -> funcion por donde empieza a ejecutar el código
+        * Se puede especificar argumentos en cada funcion -> func funcWithArgument(a int, b int, c string)
+        * se puede definir el tipo de dato de retorno -> funt withValueType(a int, b int) int
+        * se puede retornar más de un valor en una funcion -> func severalValuesOfReturns(a int) (a, b int)
+        * Se pueden recibir todos los valores de retorno -> value1, value2 := severalValuesOfReturns(2)
+        * se pueden recibir parcialemente los valores de retorno de una funcion -> value1, _ := severalValuesOfReturns(2)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Go Doc: La forma en que puedes ver la documentación
+    Ya sea de libreria de terceros o paquetes internos y todo lo puedes hacer desde la misma interfaz
+
+    Para buscar documentacion puedes ingresar a alguna de estas dos paginas
+        * Go Doc = https://pkg.go.dev/std para buscar la implementacion de librerias propias de Go
+        * Go Doc = https://pkg.go.dev/ para buscar librerias propieas de go y librerias creadas por terceros ejmplo Cobra para crear comandos de consola.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Manejo de ciclos en Go (En Go solo existe un ciclo iteractivo y el el FOR)
+    * for (el form clasico de todos los tiempos)
+        for i := 0; i < 10; i++ {}
+    
+    * form while (El for se va a ejecutar hasta que se cumpla una condición)
+        counter := 0;
+        for counter < 10 {
+            fmt.Println(counter)
+            counter++
+        } 
+
+    * for forever (el for se va a ejecutar de forma infinita hasta que yo le indique cuando salir)
+        for {}
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Conversion de tipos de datos
+    Para convertir datos en Go se utiliza la libreria strconv
+
+        * Convertir un string a un int = strconv.Atoi("43")
+        * Convertir un int a un string = strconv.Itoa(-43)
+
+    para conocer más formas de conversión puedes ver https://pkg.go.dev/strconv
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Multiples condicones anidadas (switch)
+    Ejemplo
+        switch condicion {
+            case "a": 
+                ...
+            case "b":
+                ...
+            default
+                ...
+        }
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+El uso de los keywords defer, break y continue
+    * defer: 
+        Con este especificamos al codigo que cuando vaya a morir la ejecución de una funcion debe ejecutar esa linea antes de morir 
+        (Se puede usar para cerrar conexiona a db, para cerrar archivos, etc)
+        Las buenas practicas me dicen que por cada funcion deberi usar un solo defer, aunque se pueden colocar más de uno por función
+
+    Los otros dos se usan dentro del ciclo for    
+    * break:
+        Con este especificamos que queremos salir del ciclo
+
+    * continue:
+        Con este especificamos al ciclo que siga sus interacciones sin ningn inconveniente 
+        (se puede usar cuando tenermos excepciones controlada y queremos que continue su ejecucion el ciclo for) 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Arrays y Slices
+    El manejo de listas en los lenguajes de programacion es muy comun y en Go existe dos formas de manejarlos
+    * Arrays (Inmutables) = Tamaño fijo (Son más eficientes)
+    * slices (Mutables) = Tamaño dinamico
+
+
+    funciones
+        * len() = para conocer el tamaño del array o el slice
+        * cap() = para conocer la capacidad disponible que tiene los array o slice
+        * append() = para agregar valores al final del slice
+
+    Recorrer slices con Range
+        * i hace refenecia al indice, i se puede escapar con _
+        * v hace referencia al valor de cada uno de los elementos del slice
+
+    for i, v := range slice{
+        ...
+    }
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Llave valor con Maps
+    Es una estructura de datos que utiliza clave - valor lo que lo hace más eficiente a la hora de acceder a la información
+    ya que de forma nativa utilizan concurrencia lo que los hace más eficiente al interactuar con ellos.
+
+    la forma de definir un map es la sigueinte
+     - map[tipo_llave]tipo_valor
+
+    Nota!!
+    Al recorrer un map con range hay que tener en cuenta que no siempre vamos a obtener los valores
+    en el mismo orden que fueron ingresados, como la insercion ocurre de forma concurrente el orden se puede ver de forma aleatorea
+    Si necesitas tener los valores en un orden especifico es mejor utilizar los slices
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Strucs: La forma de hacer clases en GO
+    type = es el keyword para decir tipo de dato y la forma en que crearemos los strucs 
+
+    type Car struc {
+        modelo: string
+        color: string
+    }
+
+    formas de crear instancias de estas clases es:
+        * myCar := car{modelor "2024", color: "rojo"}
+        * var otherCar Car
+          otherCar.modelo = "2025"
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Modificadores de acceso en funciones y Structs
+    para crear claseses en GO utilizamos algo que se llama los structs
+
+    * type car struct {
+        --propierties
+    }
+
+    Crear instancias de los types
+    * myCar := car{...properties}
+
+    Modificadores de Acceso
+    * Mayuscula = Publica (Types, funciones, propiedades que esten dentro de los structs)
+    * minuscula = Privada (Types, funciones, propiedades que esten dentro de los structs)
+
+
+    Hay varias cosas que hay que tener en cuenta a la hora de usar los types
+    * Si las propiedades tel type comienzan por Mayuscula significa que la propiedad es publica y si empieza por minuscula quiere decir que la propiedad es privada.
+    * Si el nombre del type comienza por minuscula quiere decir que el type "la clase" es privada pero si es mayuscula quiere decir que es publica.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Structs y Punteros
+
+    Los punteros son direcciones de memoria
+    - El & = se utiliza para ver el puntero de una variable
+    - El * = se utiliza para ver el valor que se encuentra en un puntero
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Stringers: personalizar el ouput de Structs
+
+    La estructura de datos " Struct " tiene un método llamado " String " , que podemos sobrescribir para personalizar la salida a consola de los datos del struct.
+    Es una forma de personalizar la impresion de los structs de una forma más eficiente.
+
+    ejemplo: func (myPC pc) String() string { return fmt.Sprintf("") }
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Interfaces y listas de interfaces
+    Las interfaces se usan cuando se tiene un comportamiento similar entre varias types "clases"
+    * Ejemplo 
+        // esta es la forma en Go de crear interfaces
+        type figuras2D interface {
+            area() float64
+        }
+    
+    Las listas de interfaces no son más que listas (slices) que permiten recibir varios tipos de datos en su misma estructura
+    * Ejemplo
+        myInterface := []interface{}{"Hola", 12, 4.90}
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+¿Qúes es la concurrencia?
+    * Concurrencia = Un programa esta lidiando con multiples cosas al mismo tiempo
+    * paralelismos = muchos hilos esta ejecutando multiples cosas al mismo tiempo
+
+    Que es un Goroutines? 
+        *  es una forma de manejar múltiples procesos de forma concurrente.
+
+    la forma de crear una go routine es solo agregarle la palabra GO
+
+    WaitGroup = espera a qeu una colección de gorotines termine su ejecución, es más complejo mantenerlo
+
+    la funcion main no es más que una goroutine
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Channels (Con esto podemos trabajar la concurerncia en GO, esta es una forma menos eficiente)
+    Es una forma de organizar los goroutines
+
+    Notas
+    Los channels te permiten compartir información entre las goroutines ya que los channels manejan la comunicacion nativa
+    
+    Forma de declarar un channel
+        * c := make(chan string)
+
+    Formas de ingresar y sacar informacon de un channel
+        * c <- x = ingresa un valor x a el channel c
+        * <- c = saca un valor que se encuentre en el channel c
+
+
+    Range, Close y Select en Channels
+        * range = se usa para recorrer los valores que se encuentra dentro de un channel
+        * close = se usa para cerrar un channel y no recibir más datos en ese channel sin importar si tiene o no capacidad
+        * select = se usa cuando se tienen multiples channels y no se sabe cual puede responde primero 
+    
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Go get: El manejador de paquetes
+
+    para crear descargar una dependencia se debe usar el comando:
+        * go get
+
+    Ejemplo: go get -v -u golang.org/x/tour
+        * -v = para que muestre el proceso de descarga
+        * -u = para descargar la dependencia nuevamente si ya fue descargada.
+
+
+    Una libreria para aprender Go por un curso interactivo se llama "tour"
+
+    puedes buscar los paquetes en: www.awesome-go.com
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Go modules: Ir más allá del GoPath
+
+    Echo
+        * Es un framework para trabajarcon GO
+
+    para descargar Echo se debe ejecutar el comando:
+        
+
+     
